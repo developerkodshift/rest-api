@@ -1,0 +1,210 @@
+{
+  "info": {
+    "_postman_id": "rest-api-shopify-collection",
+    "name": "Shopify REST API (Local Server)",
+    "description": "Test the local Node.js REST API server that wraps Shopify REST Admin API.\n\n## Setup\n1. Start the Node.js server: `npm start`\n2. Set `baseUrl` to `http://localhost:3000`\n3. Set `productHandle` to a real product handle from your store\n4. Set `productId` to a real product ID (numeric)\n\nTo find product handles/IDs, run the 'List Products' request first.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        },
+        "description": "Verify the server is running and connected to Shopify."
+      }
+    },
+    {
+      "name": "API Root (List Endpoints)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/",
+          "host": ["{{baseUrl}}"],
+          "path": [""]
+        }
+      }
+    },
+    {
+      "name": "1. List Products",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/products?limit=20",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products"],
+          "query": [
+            { "key": "limit", "value": "20", "description": "Max 250" },
+            { "key": "page_info", "value": "", "description": "Pagination cursor", "disabled": true },
+            { "key": "fields", "value": "id,title,handle,vendor,product_type", "description": "Comma-separated fields", "disabled": true }
+          ]
+        },
+        "description": "Returns paginated list of products. Pagination info is in the response."
+      }
+    },
+    {
+      "name": "2. Filter Products by Vendor",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/filter?vendor=Thareja Premium",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "filter"],
+          "query": [
+            { "key": "vendor", "value": "Thareja Premium" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "3. Filter Products by Product Type",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/filter?product_type=T-Shirt",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "filter"],
+          "query": [
+            { "key": "product_type", "value": "T-Shirt" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "4. Filter Products by Price Range",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/filter?min_price=50&max_price=150",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "filter"],
+          "query": [
+            { "key": "min_price", "value": "50" },
+            { "key": "max_price", "value": "150" }
+          ]
+        },
+        "description": "Price filtering is done client-side since Shopify REST does not support price filters natively."
+      }
+    },
+    {
+      "name": "5. Filter Products by Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/filter?status=active",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "filter"],
+          "query": [
+            { "key": "status", "value": "active", "description": "active, draft, or archived" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "6. Get Product Details (by Handle)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/{{productHandle}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "{{productHandle}}"]
+        }
+      }
+    },
+    {
+      "name": "7. Get Product Details (by ID)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/{{productId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "{{productId}}"]
+        }
+      }
+    },
+    {
+      "name": "8. Get Product Measurements",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/{{productHandle}}/measurements",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "{{productHandle}}", "measurements"]
+        },
+        "description": "Returns the custom.measurements metafield. Requires metafield to be set on the product."
+      }
+    },
+    {
+      "name": "9. Get Product Size Chart",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/{{productHandle}}/size-chart",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "{{productHandle}}", "size-chart"]
+        }
+      }
+    },
+    {
+      "name": "10. Get Product Images",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/{{productHandle}}/images",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "{{productHandle}}", "images"]
+        }
+      }
+    },
+    {
+      "name": "11. Get All Product Metafields",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/{{productHandle}}/metafields",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "{{productHandle}}", "metafields"],
+          "query": [
+            { "key": "namespace", "value": "custom", "disabled": true },
+            { "key": "key", "value": "measurements", "disabled": true }
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "productHandle",
+      "value": "premium-cotton-tshirt",
+      "type": "string"
+    },
+    {
+      "key": "productId",
+      "value": "1234567890",
+      "type": "string",
+      "description": "Numeric Shopify product ID"
+    }
+  ]
+}
